@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1: LED Blink</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Project 1: LED Blink</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Description</h2>
+            <p>
+                In this project, I explored a creative approach to controlling an LED. 
+                Rather than simply turning the light on and off, I designed it so that pressing the button 
+                causes the LED to gradually fade in, giving it a smooth transition from off to on. 
+                After the button is released, the LED slowly fades out instead of shutting off immediately. 
+                This effect was inspired by automatic lighting systems that detect presence and gradually 
+                adjust lighting for a more comfortable and natural feel.
+            </p>
+
+            <h2>Materials</h2>
+            <ul>
+                <li>Arduino Uno</li>
+                <li>LED</li>
+                <li>Resistor</li>
+                <li>Button</li>
+                <li>Jumper wires</li>
+            </ul>
+
+
+             <!-- Image Section -->
+             <h2>Image</h2>
+             <div class="image-container">
+                 <img src="images/visual.jpg" alt="visual">
+             </div>
+
+            <!-- Video Section -->
+            <h2>Demonstration Video</h2>
+            <div class="video-container">
+                <video controls>
+                    <source src="video/LED_blink.mp4"type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <h2>Code</h2>
+            <pre>
+<code>
+
+int ledPin = 11;    // Pin connected to the LED
+int buttonPin = 3;  // Pin connected to the button
+bool isFadingOut = false;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);   // Set pin 11 as OUTPUT (for LED)
+  pinMode(buttonPin, INPUT); // Set pin 3 as INPUT (for button)
+}
+
+void loop() {
+  // Check the state of the button
+  if (digitalRead(buttonPin) == HIGH) {  // If the button is pressed
+    isFadingOut = false; // Stop fade out if button is pressed
+
+    // Fade the LED in (increase brightness)
+    for (int brightness = 0; brightness <= 255; brightness++) {
+      analogWrite(ledPin, brightness); 
+      delay(100);  
+    }
+  } 
+  else if (!isFadingOut) {  // If button is not pressed and fade-out not started
+    isFadingOut = true; // Start fading out
+    // Fade the LED out (decrease brightness)
+    for (int brightness = 255; brightness >= 0; brightness--) {
+      analogWrite(ledPin, brightness);  
+      delay(10);  
+    }
+  }
+}
+</code>
+            </pre>
+
+            <a href="../index.html" class="button">Back to Projects</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Tangible HCI - Arduino Projects</p>
+        </div>
+    </footer>
+</body>
+</html>

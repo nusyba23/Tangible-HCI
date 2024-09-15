@@ -1,0 +1,146 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Container */
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Header Styling */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+}
+
+/* Navigation Menu */
+nav {
+    background-color: #555;
+}
+
+.nav-menu {
+    list-style: none;
+    text-align: center;
+}
+
+.nav-menu li {
+    display: inline;
+}
+
+.nav-menu a {
+    color: #fff;
+    padding: 15px 20px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.nav-menu a:hover {
+    background-color: #666;
+}
+
+/* About Section */
+section#about {
+    padding: 40px 0;
+}
+
+section#about p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* Projects Section */
+section#projects {
+    padding: 40px 0;
+}
+
+.project {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.project h3 {
+    font-size: 1.5rem;
+}
+
+.project p {
+    margin-bottom: 10px;
+}
+
+.button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: #555;
+}
+/* Image Container */
+.image-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.image-container img {
+    max-width: 80%; /* Ensures the image scales with the container */
+    height: auto;    /* Maintains aspect ratio */
+    border: 2px solid #ddd; /* Optional border */
+    border-radius: 8px; /* Optional rounded corners */
+}
+
+/* Contact Section */
+section#contact {
+    padding: 40px 0;
+    text-align: center;
+}
+
+section#contact ul {
+    list-style: none;
+}
+
+section#contact li {
+    margin-bottom: 10px;
+}
+
+section#contact a {
+    color: #333;
+    text-decoration: none;
+}
+
+section#contact a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
