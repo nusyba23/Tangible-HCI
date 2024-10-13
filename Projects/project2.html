@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex Sensor MIDI Piano</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        pre {
+            background-color: #eee;
+            padding: 15px;
+            border-left: 5px solid #4CAF50;
+            overflow-x: auto;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+        }
+        .project-info {
+            background-color: #f0f8ff;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Flex Sensor MIDI Piano</h1>
+
+        <div class="project-info">
+            <h2>Project Overview</h2>
+            <p>
+                The "Flex Sensor MIDI Piano" is an interactive musical instrument built using an Arduino and a flex sensor. 
+                It converts the bending of the flex sensor into MIDI messages that are transmitted via USB, allowing the performer to play 
+                piano notes by bending their finger. This project demonstrates how a simple sensor can be used to control digital sounds 
+                and create an expressive performance interface.
+            </p>
+            <h3>Materials Used:</h3>
+            <ul>
+                <li>Arduino ATMEGA32U4 (Leonardo)</li>
+                <li>1 Flex Sensor</li>
+                <li>10kΩ Resistor</li>
+                <li>USB Cable</li>
+                <li>A Glove (for integration)</li>
+            </ul>
+            <h3>Functionality:</h3>
+            <p>
+                The flex sensor is mounted on a glove, and the bending of the finger triggers MIDI notes that are sent to a connected synthesizer or digital piano.
+                The pitch of the note changes based on how much the sensor is bent, making it an intuitive and physical way to play digital instruments.
+            </p>
+        </div>
+
+        <h2>Arduino Code</h2>
+        <p>
+            Below is the Arduino code used in this project. The flex sensor values are read and mapped to MIDI notes (C4 to C5 range). The Arduino sends these MIDI
+            messages directly via USB, making it compatible with any MIDI-enabled software.
+        </p>
+        <pre><code>
+// Include the MIDIUSB library
+#include "MIDIUSB.h"  
+
+int flexPin = A1;  // Pin where the flex sensor is connected
+int prevNote = -1;  // To track the previous note to avoid repetition
+
+void setup() {
+  // No need for Serial.begin() as we are using direct USB MIDI
+}
+
+void loop() {
+  int flexValue = analogRead(flexPin);  // Read the flex sensor value
+  
+  // Map flex sensor value to MIDI note numbers (adjust these ranges if necessary)
+  int pitch = map(flexValue, 300, 600, 60, 72);  // C4 to C5 (MIDI note range)
+
+  // Only send a new note if the pitch has changed to avoid repeated notes
+  if (pitch != prevNote) {
+    // Send the Note On message
+    midiEventPacket_t noteOn = {0x09, 0x90, pitch, 127};  // 0x90 = Note On, 127 = max velocity
+    MidiUSB.sendMIDI(noteOn);
+    MidiUSB.flush();  // Send the data
+    
+    delay(500);  // Sustain the note for 500 ms
+
+    // Send the Note Off message
+    midiEventPacket_t noteOff = {0x08, 0x80, pitch, 0};  // 0x80 = Note Off
+    MidiUSB.sendMIDI(noteOff);
+    MidiUSB.flush();  // Send the data
+    
+    prevNote = pitch;  // Store the current note
+  }
+
+  delay(100);  // Small delay before next reading
+}
+        </code></pre>
+
+        <h2>How It Works</h2>
+        <p>
+            The flex sensor is mounted on the index finger of a glove. As the performer bends their finger, the sensor's resistance changes, and this change is read by the 
+            Arduino as a voltage change. The Arduino then maps the bending motion to different MIDI notes (ranging from C4 to C5). These notes are sent via the USB cable to 
+            any MIDI-compatible software or hardware, allowing the performer to control a digital piano or synthesizer just by moving their hand.
+        </p>
+        <h3>Usage:</h3>
+        <ol>
+            <li>Put on the glove and connect the Arduino to your computer via USB.</li>
+            <li>Open a MIDI-compatible application (e.g., Ableton Live, FL Studio, WebMIDI Piano).</li>
+            <li>As you bend your finger, you’ll hear different piano notes being played!</li>
+        </ol>
+
+        <h3>Creative Possibilities:</h3>
+        <p>
+            The project can be expanded by adding more sensors to control other aspects of the sound, such as volume or effects. Additional buttons can also be incorporated to switch 
+            between instruments or octaves, allowing the glove to become a fully-fledged MIDI controller for live performances or studio recording.
+        </p>
+    </div>
+
+</body>
+</html>
