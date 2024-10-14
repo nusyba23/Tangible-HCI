@@ -92,11 +92,11 @@
 // Include the MIDIUSB library
 #include "MIDIUSB.h"  
 
-int flexPin = A1;  // Pin where the flex sensor is connected
+int flexPin = A1;  
 int prevNote = -1;  // To track the previous note to avoid repetition
 
 void setup() {
-  // No need for Serial.begin() as we are using direct USB MIDI
+  // not using Serial.begin() as we are using direct USB MIDI
 }
 
 void loop() {
@@ -108,21 +108,21 @@ void loop() {
   // Only send a new note if the pitch has changed to avoid repeated notes
   if (pitch != prevNote) {
     // Send the Note On message
-    midiEventPacket_t noteOn = {0x09, 0x90, pitch, 127};  // 0x90 = Note On, 127 = max velocity
+    midiEventPacket_t noteOn = {0x09, 0x90, pitch, 127};  
     MidiUSB.sendMIDI(noteOn);
-    MidiUSB.flush();  // Send the data
+    MidiUSB.flush();  
     
-    delay(500);  // Sustain the note for 500 ms
+    delay(500); 
 
     // Send the Note Off message
-    midiEventPacket_t noteOff = {0x08, 0x80, pitch, 0};  // 0x80 = Note Off
+    midiEventPacket_t noteOff = {0x08, 0x80, pitch, 0};  
     MidiUSB.sendMIDI(noteOff);
-    MidiUSB.flush();  // Send the data
+    MidiUSB.flush(); 
     
-    prevNote = pitch;  // Store the current note
+    prevNote = pitch;  
   }
 
-  delay(100);  // Small delay before next reading
+  delay(100); 
 }
         </code></pre>
 
