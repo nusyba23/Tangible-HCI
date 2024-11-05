@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Touch-Sensitive Mood Indicator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .code {
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: monospace;
+    }
+    .code pre {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Touch-Sensitive Mood Indicator</h1>
+
+  <h2>Overview</h2>
+  <p>This project is a touch-sensitive mood indicator that uses an Arduino, a flex sensor, and a servo motor to visualize different mood states. The mood is determined by the bending level of the flex sensor. The servo motor moves a "flower" petal arrangement, which opens or closes based on the mood. The project operates with three mood states: Calm, Neutral, and Stressed.</p>
+
+  <h3>Inspiration</h3>
+  <p>I got this project inspiration from the popular angry octopus plushie, where the plushie has two representations of mood states: one is angry and the other is happy. Since I don’t have that plushie, I thought of making something similar to represent my mood. This project serves as my own personal mood indicator with multiple states. When I’m in a calm mood, the blue paper flower will rotate 6 times if the flex sensor is straight. If the flex sensor is bent, indicating stress, the flower will rotate twice, visually showing a shift in my mood.</p>
+
+  <h2>Components Required</h2>
+  <ul>
+    <li>Arduino Uno R3</li>
+    <li>SG90 Servo Motor</li>
+    <li>Flex Sensor</li>
+    <li>10kΩ Resistor</li>
+    <li>Jumper Wires</li>
+    <li>Paper or Foam (for creating flower petals)</li>
+  </ul>
+
+  <h2>Connections</h2>
+  <ul>
+    <li><strong>Flex Sensor</strong>:
+      <ul>
+        <li>One end connected to the 5V pin on Arduino.</li>
+        <li>Other end connected to analog pin A0.</li>
+        <li>10kΩ resistor placed between A0 and GND (pull-down resistor).</li>
+      </ul>
+    </li>
+    <li><strong>Servo Motor</strong>:
+      <ul>
+        <li>Signal wire (yellow/orange) connected to digital pin 9 on Arduino.</li>
+        <li>Power wire (red) connected to the 5V pin on Arduino.</li>
+        <li>Ground wire (brown/black) connected to the GND pin on Arduino.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>Arduino Code</h2>
+  <p>Upload the following code to your Arduino Uno. This code reads the flex sensor values, determines the mood based on the bend level, and controls the servo motor to open and close the flower petals a specified number of times.</p>
+  <div class="code">
+    <pre>
+#include &lt;Servo.h&gt;
+
+Servo myServo;
+int flexPin = A0;            // Analog pin for the flex sensor
+int flexValue;               // Variable to store flex sensor reading
+
+// Define thresholds for each mood state based on flex sensor readings
+int calmThreshold = 600;     // Threshold value for Calm mood
+int neutralThreshold = 800;  // Threshold value for Neutral mood
+
+void setup() {
+  myServo.attach(9);         // Attach servo to digital pin 9
+  Serial.begin(9600);        // Initialize serial communication for debugging
+}
+
+void loop() {
+  flexValue = analogRead(flexPin);  // Read the flex sensor value
+
+  // Determine mood based on flex sensor reading
+  if (flexValue < calmThreshold) {
+    // Calm mood - Move servo 3 times
+    Serial.println("Mood: Calm (Servo moves 3 times)");
+    moveServo(3); // Call function to move servo 3 times
+  }
+  else if (flexValue >= calmThreshold && flexValue < neutralThreshold) {
+    // Neutral mood - Move servo 2 times
+    Serial.println("Mood: Neutral (Servo moves 2 times)");
+    moveServo(2); // Call function to move servo 2 times
+  }
+  else {
+    // Stressed mood - Move servo 1 time
+    Serial.println("Mood: Stressed (Servo moves 1 time)");
+    moveServo(1); // Call function to move servo 1 time
+  }
+
+  // Print flex sensor value for debugging
+  Serial.print("Flex Sensor Value: ");
+  Serial.println(flexValue);
+
+  delay(2000);  // Delay to prevent constant re-triggering, adjust as needed
+}
+
+// Function to move the servo a specified number of times
+void moveServo(int times) {
+  for (int i = 0; i < times; i++) {
+    myServo.write(0);      // Move servo to 0 degrees
+    delay(500);            // Wait for the servo to reach 0 degrees
+
+    myServo.write(180);    // Move servo to 180 degrees
+    delay(500);            // Wait for the servo to reach 180 degrees
+  }
+}
+    </pre>
+  </div>
+
+  <h2>How It Works</h2>
+  <p>The project operates by detecting the level of bending on the flex sensor and interpreting it as a mood:</p>
+  <ul>
+    <li><strong>Calm</strong>: If the flex sensor is relatively straight, the mood is calm. The servo motor will open and close the flower petals three times.</li>
+    <li><strong>Neutral</strong>: If the flex sensor is moderately bent, the mood is neutral. The servo motor will open and close the petals two times.</li>
+    <li><strong>Stressed</strong>: If the flex sensor is fully bent, the mood is stressed. The servo motor will open and close the petals only once.</li>
+  </ul>
+  
+  <h2>Explanation of Code</h2>
+  <p>The code starts by reading the value from the flex sensor (connected to analog pin A0) and then determines the mood based on pre-set thresholds. The mood is mapped as follows:</p>
+  <ul>
+    <li>If the flex sensor value is below <code>calmThreshold</code>, it’s interpreted as "Calm" and moves the servo 3 times.</li>
+    <li>If the value is between <code>calmThreshold</code> and <code>neutralThreshold</code>, it’s interpreted as "Neutral" and moves the servo 2 times.</li>
+    <li>If the value is above <code>neutralThreshold</code>, it’s interpreted as "Stressed" and moves the servo 1 time.</li>
+  </ul>
+  <p>The <code>moveServo</code> function moves the servo back and forth between 0 and 180 degrees the specified number of times, creating an open-and-close effect for the petals.</p>
+
+  <h2>Final Notes</h2>
+  <p>This touch-sensitive mood indicator is an interactive and visual representation of mood states. Experiment with the flex sensor’s threshold values to get accurate mood transitions, and customize the flower petals for a more personalized look!</p>
+</div>
+
+</body>
+</html>
