@@ -1,48 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Touch-Sensitive Mood Indicator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f4f9;
-    }
-    h1, h2, h3 {
-      color: #333;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .code {
-      background: #f1f1f1;
-      padding: 10px;
-      border-radius: 5px;
-      overflow-x: auto;
-      font-family: monospace;
-    }
-    .code pre {
-      margin: 0;
-    }
-    .video-container {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .video-container video {
-      max-width: 100%;
-      border-radius: 8px;
-    }
-  </style>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touch-Sensitive Mood Indicator</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="style.css">
+  </head>
 <body>
 
 <div class="container">
@@ -89,20 +53,17 @@
 #include &lt;Servo.h&gt;
 
 Servo myServo;
-int flexPin = A0;            // Analog pin for the flex sensor
-int flexValue;               // Variable to store flex sensor reading
-
+int flexPin = A0;           
+int flexValue;               
 // Define thresholds for each mood state based on flex sensor readings
-int calmThreshold = 600;     // Threshold value for Calm mood
-int neutralThreshold = 800;  // Threshold value for Neutral mood
-
+int calmThreshold = 600;     
+int neutralThreshold = 800;  
 void setup() {
-  myServo.attach(9);         // Attach servo to digital pin 9
-  Serial.begin(9600);        // Initialize serial communication for debugging
-}
+  myServo.attach(9);         
+  Serial.begin(9600);        
 
 void loop() {
-  flexValue = analogRead(flexPin);  // Read the flex sensor value
+  flexValue = analogRead(flexPin);  
 
   // Determine mood based on flex sensor reading
   if (flexValue < calmThreshold) {
@@ -113,29 +74,29 @@ void loop() {
   else if (flexValue >= calmThreshold && flexValue < neutralThreshold) {
     // Neutral mood - Move servo 2 times
     Serial.println("Mood: Neutral (Servo moves 2 times)");
-    moveServo(2); // Call function to move servo 2 times
+    moveServo(2);
   }
   else {
     // Stressed mood - Move servo 1 time
     Serial.println("Mood: Stressed (Servo moves 1 time)");
-    moveServo(1); // Call function to move servo 1 time
+    moveServo(1); 
   }
 
   // Print flex sensor value for debugging
   Serial.print("Flex Sensor Value: ");
   Serial.println(flexValue);
 
-  delay(2000);  // Delay to prevent constant re-triggering, adjust as needed
+  delay(2000);  
 }
 
 // Function to move the servo a specified number of times
 void moveServo(int times) {
   for (int i = 0; i < times; i++) {
-    myServo.write(0);      // Move servo to 0 degrees
-    delay(500);            // Wait for the servo to reach 0 degrees
+    myServo.write(0);      
+    delay(500);            
 
-    myServo.write(180);    // Move servo to 180 degrees
-    delay(500);            // Wait for the servo to reach 180 degrees
+    myServo.write(180);    
+    delay(500);            
   }
 }
     </pre>
