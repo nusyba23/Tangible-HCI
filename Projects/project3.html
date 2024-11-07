@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Touch-Sensitive Mood Indicator</title>
-    <!-- Link to the external CSS file -->
-    <link rel="stylesheet" href="style.css">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Touch-Sensitive Mood Indicator</title>
+  <!-- Link to the external CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
 <div class="container">
@@ -17,6 +17,15 @@
 
   <h3>Inspiration</h3>
   <p>I got this project inspiration from the popular angry octopus plushie, where the plushie has two representations of mood states: one is angry and the other is happy. Since I don’t have that plushie, I thought of making something similar to represent my mood. This project serves as my own personal mood indicator with multiple states. When I’m in a calm mood, the blue paper flower will rotate 6 times if the flex sensor is straight. If the flex sensor is bent, indicating stress, the flower will rotate twice, visually showing a shift in my mood.</p>
+
+  <!-- Project Video within the Inspiration section -->
+  <div class="video-container">
+    <video controls>
+      <source src="../video/Touch Sens.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p><em>Watch the project demonstration video above.</em></p>
+  </div>
 
   <h2>Components Required</h2>
   <ul>
@@ -121,14 +130,6 @@ void moveServo(int times) {
 
   <h2>Final Notes</h2>
   <p>This touch-sensitive mood indicator is an interactive and visual representation of mood states. Experiment with the flex sensor’s threshold values to get accurate mood transitions, and customize the flower petals for a more personalized look!</p>
-
-  <h2>Project Video</h2>
-  <div class="video-container">
-    <video controls>
-      <source src="../video/Touch Sens.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
 
 </div>
 
