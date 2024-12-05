@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interactive Mood Indicator Tree</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>Interactive Mood Indicator Tree</h1>
+            <p>A Tangible HCI Arduino Project</p>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <ul class="nav-menu">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#components">Components</a></li>
+            <li><a href="#code">Arduino Code</a></li>
+            <li><a href="#python">Python Code</a></li>
+            <li><a href="#demo">Demo Video</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Project Overview -->
+        <section id="overview">
+            <div class="container">
+                <h2>Project Overview</h2>
+                <p>
+                    The Interactive Mood Indicator Tree is more than just a tech project—it's a fusion of nature and technology designed to explore how we can make our environments more emotionally responsive. Inspired by the idea of creating a tree that "feels" and "reacts" to human emotions, this project uses Arduino technology and sentiment analysis to breathe life into a fake tree.
+
+                    Imagine coming home after a long day. You share your mood—whether you're happy, neutral, or sad—with the tree, and it responds in kind. Its branches sway gently in happiness, stay calm in neutrality, or droop sympathetically when sadness is detected. To add a touch of auditory emotion, the tree even plays a cheerful tune when you're happy, making it not just a mood indicator but a companion that reflects your emotional state.
+
+                    By blending natural elements with tangible computing concepts, the Mood Indicator Tree aims to showcase how physical objects can react to our inner worlds, creating a bridge between human emotions and their physical manifestations. Whether you're showcasing it as a part of an HCI course or inspiring others to combine creativity and technology, this project is sure to leave a lasting impression.
+                </p>
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components">
+            <div class="container">
+                <h2>Components Used</h2>
+                <ul id="components-list"></ul>
+            </div>
+        </section>
+
+        <!-- Arduino Code Section -->
+        <section id="code">
+            <div class="container">
+                <h2>Arduino Code</h2>
+                <pre>
+<code id="arduino-code">
+// Arduino code dynamically added here via JavaScript
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Python Code Section -->
+        <section id="python">
+            <div class="container">
+                <h2>Python Code</h2>
+                <pre>
+<code id="python-code">
+// Python code dynamically added here via JavaScript
+</code>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Demo Video Section -->
+        <section id="demo">
+            <div class="container">
+                <h2>Demo Video</h2>
+                <video controls>
+                    <source src="path_to_video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="container">
+                <h2>Contact Me</h2>
+                <p>If you have any questions about this project or want to learn more, feel free to reach out!</p>
+                <ul>
+                    <li>Email: nusyyasir@gmail.com</li>
+                    <li>GitHub: <a href="https://github.com/nusyba23" target="_blank">github.com/nusyba23</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Interactive Mood Indicator Tree - Arduino Project</p>
+        </div>
+    </footer>
+
+    <script>
+        // Components Section
+        const components = [
+            "Arduino UNO R3",
+            "2 Servo Motors (SG90 and HXT900)",
+            "Fake Tree",
+            "Breadboard",
+            "Jumper Wires",
+            "Speaker"
+        ];
+
+        const componentsList = document.getElementById('components-list');
+        components.forEach(component => {
+            const li = document.createElement('li');
+            li.textContent = component;
+            componentsList.appendChild(li);
+        });
+
+        // Arduino Code
+        const arduinoCode = `
+#include <Servo.h>
+
+// Servo Definitions
+Servo branch1; 
+Servo branch2; 
+// Pins
+#define BRANCH1_PIN 9   
+#define BRANCH2_PIN 10  
+#define SPEAKER_PIN 5   
+
+void setup() {
+  branch1.attach(BRANCH1_PIN);
+  branch2.attach(BRANCH2_PIN);
+
+  pinMode(SPEAKER_PIN, OUTPUT);
+
+  Serial.begin(9600); // Start serial communication
+  Serial.println("Awaiting mood input...");
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    char mood = Serial.read(); 
+    Serial.print("Received Mood: "); // Debugging: Print the received mood
+    Serial.println(mood);
+
+    if (mood == '1') { // Happy
+      Serial.println("Mood: Happy");
+      branchesHappy();
+      playHappyMusic();
+    } else if (mood == '0') { // Neutral
+      Serial.println("Mood: Neutral");
+      branchesNeutral();
+    } else if (mood == '-1') { // Sad
+      Serial.println("Mood: Sad");
+      branchesSad();
+      noTone(SPEAKER_PIN); // Ensure no sound plays
+    }
+  }
+}
+
+// Functions for Branch Movements
+void branchesHappy() {
+  for (int angle = 45; angle <= 135; angle += 5) {
+    branch1.write(angle);
+    branch2.write(180 - angle);
+    delay(50); // Smooth transition
+  }
+}
+
+void branchesNeutral() {
+  branch1.write(90); 
+  branch2.write(90);  
+}
+
+void branchesSad() {
+  branch1.write(180);  
+  branch2.write(180);  
+  Serial.println("Branches are in the straight position for Sad mood.");
+}
+
+// Function for Happy Music
+void playHappyMusic() {
+  Serial.println("Playing Happy Music...");
+  int happyNotes[] = {262, 294, 330, 349, 392, 440, 494, 523}; // Notes for Happy melody
+  int noteDuration = 300;
+  for (int i = 0; i < 8; i++) {
+    tone(SPEAKER_PIN, happyNotes[i], noteDuration); // Play each note
+    delay(noteDuration * 1.3);                      // Delay between notes
+  }
+}
+`;
+
+        const pythonCode = `
+from textblob import TextBlob
+import serial
+import time
+
+# Initialize Serial Communication with Arduino
+try:
+    arduino = serial.Serial(port='COM3', baudrate=9600, timeout=.1)  # Replace 'COM3' with your actual port
+    print("Connected to Arduino!")
+except serial.SerialException as e:
+    print(f"Error connecting to Arduino: {e}")
+    exit()
+
+def get_sentiment(text):
+    blob = TextBlob(text)
+    sentiment = blob.sentiment.polarity  # Get sentiment score (-1 to 1)
+    if sentiment > 0.2:
+        return "1"  # Happy
+    elif sentiment > -0.2:
+        return "0"  # Neutral
+    else:
+        return "-1"  # Sad
+
+def send_to_arduino(data):
+    print(f"Sending to Arduino: {data}")  # Debugging: Print the mood being sent
+    arduino.write(bytes(data, 'utf-8'))
+    time.sleep(1)
+
+# Continuously get user input and send sentiment to Arduino
+while True:
+    try:
+        text = input("Enter a message to analyze: ")
+        mood = get_sentiment(text)
+        print(f"Sentiment: {'Happy' if mood == '1' else 'Neutral' if mood == '0' else 'Sad'}")
+        send_to_arduino(mood)
+    except KeyboardInterrupt:
+        print("\\nExiting program.")
+        arduino.close()
+        break
+    except Exception as e:
+        print(f"An error occurred: {e}")
+}
+`;
+
+        document.getElementById('arduino-code').textContent = arduinoCode;
+        document.getElementById('python-code').textContent = pythonCode;
+    </script>
+</body>
+</html>
