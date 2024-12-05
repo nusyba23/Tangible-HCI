@@ -18,7 +18,7 @@ const projects = [
     {
         title: "Project 4: Mood Indicator Interactive Tree",
         description: "The Mood Indicator Interactive Tree combines touch sensors and LEDs to create a visually interactive tree that reflects the user's mood through dynamic lighting effects.",
-        link: "Projects/project4.html",
+        link: "Projects/Finalproject.html",
     },
 ];
 
